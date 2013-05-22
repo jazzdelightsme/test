@@ -1,0 +1,40 @@
+﻿<Configuration>
+<SelectionSets>
+  <SelectionSet>
+    <Name>HelpStuff</Name>
+    <Types>
+     <TypeName>MamlCommandHelpInfo</TypeName>
+     <TypeName>ExtendedCmdletHelpInfo</TypeName>
+    </Types>
+  </SelectionSet>
+</SelectionSets>
+<ViewDefinitions>
+  <View>
+    <Name>HelpFileTable</Name>
+    <ViewSelectedBy>
+      <SelectionSetName>HelpStuff</SelectionSetName>
+    </ViewSelectedBy>
+    <TableControl>
+      <TableHeaders>
+        <TableColumnHeader>
+          <Width>40</Width>
+        </TableColumnHeader>
+        <TableColumnHeader>
+        </TableColumnHeader>
+      </TableHeaders>
+      <TableRowEntries>
+        <TableRowEntry>
+          <TableColumnItems>
+            <TableColumnItem>
+              <PropertyName>Name</PropertyName>
+            </TableColumnItem>
+            <TableColumnItem>
+              <PropertyName>Synopsis</PropertyName>
+            </TableColumnItem>
+          </TableColumnItems>
+        </TableRowEntry>
+      </TableRowEntries>
+    </TableControl>
+  </View>
+</ViewDefinitions>
+</Configuration>
