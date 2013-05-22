@@ -248,23 +248,26 @@ process
             # to tell us where to install from.)
             $errors = @()
             [string[]] $sourcesTried = @()
-            _TryFindSource | % {
+            $retriever = _TryFindSource | % {
                 try
                 {
                     $candidateSourceRoot = $_
                     $sourcesTried += $candidateSourceRoot
                     $retriever = [PsModuleUtil.FileRetriever]::CreateFileRetriever( $candidateSourceRoot )
                     return $retriever
-                    break
                 }
                 catch
                 {
                     $errors += $_
                 }
-            } # end foreach( candidate source )
+            } | Select-Object -First 1
 
-            # We couldn't find anything.
-            throw ("Could not detect the installation source; please run again, but with the -SourceDirectory parameter. Source locations attempted: $([string]::Join( ', ', $sourcesTried )).")
+            if( !$retriever )
+            {
+                # We couldn't find anything.
+                throw ("Could not detect the installation source; please run again, but with the -SourceDirectory parameter. Source locations attempted: $([string]::Join( ', ', $sourcesTried )).")
+            }
+            $retriever
         }
         finally { }
     } # end _TryCreateFileRetriever
