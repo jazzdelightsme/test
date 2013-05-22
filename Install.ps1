@@ -209,6 +209,7 @@ process
             #return $MyInvocation
             #return (Get-PSCallstack)
             $s = Get-PSCallstack
+            $global:TheStack = $s
             if( $s.Count -lt 3 )
             {
                 return
