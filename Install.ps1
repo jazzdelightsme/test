@@ -130,13 +130,32 @@ namespace PsModuleUtil
 
         public override string[] GetManifestList()
         {
-            string listContent = m_wc.DownloadString( c_ManifestListFile );
-            return listContent.Split( sm_lineDelims, StringSplitOptions.RemoveEmptyEntries );
+            try
+            {
+                string listContent = m_wc.DownloadString( c_ManifestListFile );
+                return listContent.Split( sm_lineDelims, StringSplitOptions.RemoveEmptyEntries );
+            }
+            catch( System.Net.WebException we )
+            {
+                throw new InvalidOperationException( String.Format( "Could not find a manifest list file at {0}. If there is a valid PS module there, it is not enabled for installation over http[s] via Install.ps1. <TODO: instructions to enable it>",
+                                                                    SourceRoot ),
+                                                     we );
+            }
         }
 
         public override string ReadManifestContent( string manifestName )
         {
-            return m_wc.DownloadString( manifestName );
+            try
+            {
+                return m_wc.DownloadString( manifestName );
+            }
+            catch( System.Net.WebException we )
+            {
+                throw new FileNotFoundException( String.Format( "Couldn't get file {0} from {1}.",
+                                                                manifestName,
+                                                                SourceRoot ),
+                                                 we );
+            }
         }
 
         public override void DownloadFile( string filename, string destDir, bool allowOverwrite ) // TODO: Progress?
@@ -150,7 +169,17 @@ namespace PsModuleUtil
 
             string destFile = Path.Combine( destDir, filename );
             // TODO: Wlil this overwrite? I'm guessing not...
-            m_wc.DownloadFile( filename, destFile );
+            try
+            {
+                m_wc.DownloadFile( filename, destFile );
+            }
+            catch( System.Net.WebException we )
+            {
+                throw new FileNotFoundException( String.Format( "Couldn't get file {0} from {1}.",
+                                                                filename,
+                                                                SourceRoot ),
+                                                 we );
+            }
         }
 
         protected override void Dispose( bool disposing )
