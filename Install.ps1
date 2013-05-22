@@ -17,6 +17,8 @@ param( [Parameter( Mandatory = $false, Position = 0 )]
 
 begin
 {
+    Set-StrictMode -Version Latest
+
     Add-Type @'
 using System;
 using System.Net;
@@ -205,6 +207,7 @@ process
                     {
                         #$_.Value
                         $s = $_.Value
+                        Write-Host "`$s: $s" -Fore Cyan
                         $s.Substring( 0, $s.Length - $installPs1.Length )
                     }
                 } # end foreach( token )
