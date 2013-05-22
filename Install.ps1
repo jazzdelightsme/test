@@ -255,6 +255,7 @@ process
                     $sourcesTried += $candidateSourceRoot
                     $retriever = [PsModuleUtil.FileRetriever]::CreateFileRetriever( $candidateSourceRoot )
                     return $retriever
+                    break
                 }
                 catch
                 {
