@@ -51,8 +51,11 @@ namespace PsModuleUtil
             if( Directory.Exists( sourceRoot ) )
                 return new FsFileRetriever( sourceRoot );
 
-            if( sourceRoot.StartsWith( "http://", StringComparison.OrdinalIgnoreCase ) )
+            if( sourceRoot.StartsWith( "http://", StringComparison.OrdinalIgnoreCase ) ||
+                sourceRoot.StartsWith( "https://", StringComparison.OrdinalIgnoreCase ) )
+            {
                 return new HttpFileRetriever( sourceRoot );
+            }
 
             throw new NotSupportedException( "Either the source does not exist, or the source type is not supported." );
         } // end CreateFileRetriever()
@@ -255,7 +258,7 @@ process
             } # end foreach( candidate source )
 
             # We couldn't find anything.
-            throw ("Could not detect the installation source; please run again, but with the -SourceDirectory parameter. Source locations attempted: $([string]::Join( ', ', $sourcesTried ))")
+            throw ("Could not detect the installation source; please run again, but with the -SourceDirectory parameter. Source locations attempted: $([string]::Join( ', ', $sourcesTried )).")
         }
         finally { }
     } # end _TryCreateFileRetriever
